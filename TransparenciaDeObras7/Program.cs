@@ -18,10 +18,10 @@ namespace TransparenciaDeObras7
             {
                 options.AddFixedWindowLimiter(policyName: "fixed", configureOptions =>
                 {
-                    configureOptions.PermitLimit = 4;
+                    configureOptions.PermitLimit = 14;
                     configureOptions.Window = TimeSpan.FromSeconds(10);
                     configureOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                    configureOptions.QueueLimit = 5;
+                    configureOptions.QueueLimit = 10;
                 })
                 .OnRejected = async (context, token) =>
                 {

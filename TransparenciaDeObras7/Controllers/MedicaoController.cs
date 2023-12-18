@@ -8,7 +8,6 @@ namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
-    [EnableRateLimiting("fixed")]
     public class MedicaoController : ControllerBase
     {
         private readonly MedicaoContext _context;
@@ -22,7 +21,6 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.Medicao.ToListAsync();
         }
         [HttpPost]
-        [DisableRateLimiting]
         public IActionResult Add(Medicao medicao)
         {
             var medicaos = _context.Medicao.Add(medicao);
@@ -30,7 +28,6 @@ namespace TransparenciaDeObras7.Controllers
             return Ok(medicaos.Entity);
         }
         [HttpPut("{id}")]
-        [DisableRateLimiting]
         public IActionResult Update(long id, Medicao updatedMedicao)
         {
             var existingMedicao = _context.Medicao.Find(id);

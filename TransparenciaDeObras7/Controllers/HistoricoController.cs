@@ -8,7 +8,7 @@ namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
-    [EnableRateLimiting("fixed")]
+    
     public class HistoricoController : ControllerBase
     {
         private readonly HistoricoContext _context;
@@ -22,7 +22,6 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.HistoricoSet.ToListAsync();
         }
         [HttpPost]
-        [DisableRateLimiting]
         public IActionResult Add(Historico historico)
         {
             var historicos = _context.HistoricoSet.Add(historico);

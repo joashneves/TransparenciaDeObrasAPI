@@ -9,7 +9,6 @@ namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
-    [EnableRateLimiting("fixed")]
     public class FotoController : Controller
     {
         private readonly FotoContext _context;

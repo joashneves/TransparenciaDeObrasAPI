@@ -22,7 +22,6 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.Obras.ToListAsync();
         }
         [HttpPost]
-        [DisableRateLimiting]
         public IActionResult Add(Obra obra)
         {
             var obras = _context.Obras.Add(obra);
@@ -31,7 +30,6 @@ namespace TransparenciaDeObras7.Controllers
         }
 
         [HttpPut("{id}")]
-        [DisableRateLimiting]
         public IActionResult Update(long id, Obra updatedObra)
         {
             var existingObra = _context.Obras.Find(id);
