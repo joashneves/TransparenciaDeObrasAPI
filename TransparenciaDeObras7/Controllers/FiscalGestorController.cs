@@ -1,12 +1,14 @@
 ﻿using Domain;
 using Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
+    [EnableRateLimiting("fixed")]
     public class FiscalGestorController : Controller
     {
         private readonly FiscalGestorContext _context;
@@ -20,6 +22,7 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.FiscalGestors.ToListAsync();
         }
         [HttpPost]
+        [DisableRateLimiting]
         public IActionResult Add(FiscalGestor fiscalGestor)
         {
             var fiscalGestors = _context.FiscalGestors.Add(fiscalGestor);
@@ -27,6 +30,7 @@ namespace TransparenciaDeObras7.Controllers
             return Ok(fiscalGestors.Entity);
         }
         [HttpPut("{id}")]
+        [DisableRateLimiting]
         public IActionResult Update(long id, FiscalGestor updatedFiscalGestor)
         {
             var existingFiscalGestor = _context.FiscalGestors.Find(id);

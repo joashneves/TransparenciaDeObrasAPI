@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using TransparenciaDeObras7.ViewModel;
 
@@ -8,6 +9,7 @@ namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
+    [EnableRateLimiting("fixed")]
     public class FotoController : Controller
     {
         private readonly FotoContext _context;

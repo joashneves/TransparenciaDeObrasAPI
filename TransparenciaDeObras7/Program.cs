@@ -2,6 +2,7 @@
 using Infraestrutura;
 using Microsoft.AspNetCore.RateLimiting;
 using MySql.Data.MySqlClient;
+using System.Threading;
 using System.Threading.RateLimiting;
 
 namespace TransparenciaDeObras7
@@ -27,7 +28,10 @@ namespace TransparenciaDeObras7
                     context.HttpContext.Response.StatusCode = 429;
                     if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
                     {
-                        await context.HttpContext.Response.WriteAsync($"{retryAfter.TotalMinutes}Minutos", token);
+                        await context.HttpContext.Response.WriteAsync($"{retryAfter.TotalMinutes}Minutos",cancellationToken: token);
+                    }else
+                    {
+                        await context.HttpContext.Response.WriteAsync($"Muitas requisições", cancellationToken: token);
                     }
                 };
             });
@@ -58,6 +62,17 @@ namespace TransparenciaDeObras7
                     });
             });
 
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy(name: "OtherPolicy",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .WithMethods("GET");
+                    });
+            });
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -72,6 +87,7 @@ namespace TransparenciaDeObras7
                 app.UseSwaggerUI();
             }
             app.UseCors("MyPolicy");
+            app.UseCors("OtherPolicy");
 
             app.UseHttpsRedirection();
 
@@ -79,10 +95,8 @@ namespace TransparenciaDeObras7
 
             // Rate Limiter
             app.UseRateLimiter();
-            static string GetTicks() => (DateTime.Now.Ticks & 0x11111).ToString("00000");
+            app.MapDefaultControllerRoute().RequireRateLimiting("fixed");
 
-            app.MapGet("/", () => Results.Ok($"Hello {GetTicks()}"))
-                                       .RequireRateLimiting("fixed");
 
             app.MapControllers();
 

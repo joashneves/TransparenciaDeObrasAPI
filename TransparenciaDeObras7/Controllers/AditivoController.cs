@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using TransparenciaDeObras7.ViewModel;
 
@@ -8,6 +9,7 @@ namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
+    [EnableRateLimiting("fixed")]
     public class AditivoController : Controller
     {
         
@@ -22,6 +24,7 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.AditivoSet.ToListAsync();
         }
         [HttpPost]
+        [DisableRateLimiting]
         public IActionResult Add([FromForm] AditivoViewModel aditivoViewModel)
         {
             var filePath = Path.Combine("Storage/Anexo", aditivoViewModel.Aditivo.FileName);

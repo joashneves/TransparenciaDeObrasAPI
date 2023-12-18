@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using TransparenciaDeObras7.ViewModel;
 
@@ -8,6 +9,7 @@ namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
+    [EnableRateLimiting("fixed")]
     public class AnexoController : Controller
     {
         private readonly AnexoContext _context;
@@ -21,6 +23,7 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.Anexos.ToListAsync();
         }
         [HttpPost]
+        [DisableRateLimiting]
         public IActionResult Add([FromForm] AnexoViewModel anexosViewModel)
         {
             var filePath = Path.Combine("Storage/Anexo", anexosViewModel.Anexo.FileName);
@@ -37,6 +40,7 @@ namespace TransparenciaDeObras7.Controllers
             return Ok(anexosadd.Entity);
         }
         [HttpGet("Download/{id}")]
+        [DisableRateLimiting]
         public IActionResult Download(long id)
         {
             // Obtenha o caminho do arquivo com base no ID (você precisará ajustar isso com base em como seus arquivos estão organizados)
@@ -64,6 +68,7 @@ namespace TransparenciaDeObras7.Controllers
             return fileContentResult;
         }
         [HttpPut("{id}")]
+        [DisableRateLimiting]
         public IActionResult Update(long id, Anexo updatedAnexo)
         {
             var existingAnexo = _context.Anexos.Find(id);

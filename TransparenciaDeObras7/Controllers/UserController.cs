@@ -1,12 +1,14 @@
 ﻿using Domain;
 using Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace TransparenciaDeObras7.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
+    [EnableRateLimiting("fixed")]
     public class UserController : ControllerBase
     {
         private readonly UserContext _context;
@@ -20,6 +22,7 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.Users.ToListAsync();
         }
         [HttpPost]
+        [DisableRateLimiting]
         public IActionResult Add(User user)
         {
             var users = _context.Users.Add(user);
@@ -27,6 +30,7 @@ namespace TransparenciaDeObras7.Controllers
             return Ok(users.Entity);
         }
         [HttpPut("{id}")]
+        [DisableRateLimiting]
         public IActionResult Update(long id, User updatedUser)
         {
             var existingUser = _context.Users.Find(id);
