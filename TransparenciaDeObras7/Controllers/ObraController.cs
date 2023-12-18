@@ -1,0 +1,68 @@
+﻿using Domain;
+using Infraestrutura;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace TransparenciaDeObras7.Controllers
+{
+    [ApiController]
+    [Route("[Controller]")]
+    public class ObraController : ControllerBase
+    {
+        private readonly ObraContext _context;
+        public ObraController(ObraContext context)
+        {
+            _context = context ?? throw new ArgumentException(nameof(context));
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Obra>>> GetObraSet()
+        {
+            return await _context.Obras.ToListAsync();
+        }
+        [HttpPost]
+        public IActionResult Add(Obra obra)
+        {
+            var obras = _context.Obras.Add(obra);
+            _context.SaveChanges();
+            return Ok(obras.Entity);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(long id, Obra updatedObra)
+        {
+            var existingObra = _context.Obras.Find(id);
+
+            if (existingObra == null)
+            {
+                return NotFound(); // Retorna 404 se a obra não for encontrada
+            }
+
+            // Atualiza as propriedades da obra existente com base na obra recebida
+            existingObra.nomeDetalhe = updatedObra.nomeDetalhe;
+            existingObra.numeroDetalhe = updatedObra.numeroDetalhe;
+            existingObra.situacaoDetalhe = updatedObra.situacaoDetalhe;
+            existingObra.publicadoDetalhe = updatedObra.publicadoDetalhe;
+            existingObra.numeroDetalhe = updatedObra.numeroDetalhe;
+            existingObra.orgaoPublicoDetalhe = updatedObra.orgaoPublicoDetalhe;
+            existingObra.tipoObraDetalhe = updatedObra.tipoObraDetalhe;
+            existingObra.valorPagoDetalhe = updatedObra.valorPagoDetalhe;
+            existingObra.nomeContratadaDetalhe = updatedObra.nomeContratadaDetalhe;
+            existingObra.cnpjContratadaObraDetalhe = updatedObra.cnpjContratadaObraDetalhe;
+            existingObra.anoDetalhe = updatedObra.anoDetalhe;
+            existingObra.licitacao = updatedObra.licitacao;
+            existingObra.contrato = updatedObra.contrato;
+            existingObra.localizacaoobraDetalhe = updatedObra.localizacaoobraDetalhe;
+
+            try
+            {
+                _context.SaveChanges(); // Salva as alterações no banco de dados
+                return Ok(existingObra); // Retorna a obra atualizada
+            }
+            catch (DbUpdateException)
+            {
+                // Trate exceções de falha na atualização do banco de dados, se necessário
+                return StatusCode(500, "Erro interno do servidor ao atualizar a obra.");
+            }
+        }
+    }
+}
