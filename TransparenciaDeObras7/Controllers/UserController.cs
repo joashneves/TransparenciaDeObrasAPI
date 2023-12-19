@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infraestrutura;
+using Infraestrutura.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -33,6 +34,23 @@ namespace TransparenciaDeObras7.Controllers
             var users = _context.Users.Add(user);
             _context.SaveChanges();
             return Ok(users.Entity);
+        }
+        [HttpGet("public")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetPublicUserSet()
+        {
+            var users = await _context.Users
+                .Select(u => new UserViewModel
+                {
+                    Id = u.Id,
+                    nome = u.nome,
+                    nomeCompleto = u.nomeCompleto,
+                    email = u.email
+                    // Adicione outras propriedades conforme necessário, exceto a senha
+                })
+                .ToListAsync();
+
+            return Ok(users);
         }
         [HttpPut("{id}")]
         [DisableRateLimiting]
