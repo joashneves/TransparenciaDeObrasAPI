@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Domain
 {
@@ -20,6 +22,29 @@ namespace Domain
         public bool isCadastrarMedicao { get; set; }
         public bool isCadastrarFoto { get; set; }
         public bool isCadastrarOpcao { get; set; }
-        
+
+        public void SetPassword(string password)
+        {
+            senha_hash = CalculateSHA256(password);
+        }
+
+        private static string CalculateSHA256(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(password);
+                byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2")); // Converte para representação hexadecimal
+                }
+
+                return sb.ToString();
+            }
+        }
+
     }
+
 }

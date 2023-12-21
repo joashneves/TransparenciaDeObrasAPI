@@ -31,10 +31,14 @@ namespace TransparenciaDeObras7.Controllers
         [Authorize]
         public IActionResult Add(User user)
         {
+            // Calcula o hash da senha antes de adicionar o usuário
+            user.SetPassword(user.senha_hash);
+
             var users = _context.Users.Add(user);
             _context.SaveChanges();
             return Ok(users.Entity);
         }
+
         [HttpGet("public")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<UserViewModel>>> GetPublicUserSet()
@@ -42,16 +46,24 @@ namespace TransparenciaDeObras7.Controllers
             var users = await _context.Users
                 .Select(u => new UserViewModel
                 {
-                    Id = u.Id,
-                    nome = u.nome,
-                    nomeCompleto = u.nomeCompleto,
-                    email = u.email
-                    // Adicione outras propriedades conforme necessário, exceto a senha
+                Id = u.Id,
+                nome = u.nome,
+                nomeCompleto = u.nomeCompleto,
+                email = u.email,
+                isAdm = u.isAdm,
+                isCadastrarProjeto = u.isCadastrarProjeto,
+                isCadastrarAnexo = u.isCadastrarAnexo,
+                isCadastrarAditivo = u.isCadastrarAditivo,
+                isCadastrarMedicao = u.isCadastrarMedicao,
+                isCadastrarFoto = u.isCadastrarFoto,
+                isCadastrarOpcao = u.isCadastrarOpcao,
+
                 })
                 .ToListAsync();
 
             return Ok(users);
         }
+
         [HttpPut("{id}")]
         [DisableRateLimiting]
         [Authorize]
@@ -76,6 +88,9 @@ namespace TransparenciaDeObras7.Controllers
             existingUser.isCadastrarMedicao = updatedUser.isCadastrarMedicao;
             existingUser.isCadastrarFoto = updatedUser.isCadastrarFoto;
             existingUser.isCadastrarOpcao = updatedUser.isCadastrarOpcao;
+
+            // Calcula o hash da senha antes de adicionar o usuário
+            updatedUser.SetPassword(updatedUser.senha_hash);
 
             try
             {

@@ -17,7 +17,7 @@ namespace TransparenciaDeObras7.Services
                 {
                     new Claim("userID", user.Id.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddHours(3),
+                Expires = DateTime.MaxValue,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

@@ -29,6 +29,8 @@
     <None Remove="Storage\Foto\072cdcc40c714f0aaf5454910c4346fc.jpg" />
     <None Remove="Storage\Foto\4945bdafee9952fa778cb4187c37c9d5.jpg" />
     <None Remove="Storage\Foto\9b62bb74b2fbdc12a85bbc05a71c5413.jpg" />
+    <None Remove="Storage\Foto\cidaadePresidenteKnnedy.jfif" />
+    <None Remove="Storage\Foto\images.jfif" />
   </ItemGroup>
 
   <ItemGroup>
