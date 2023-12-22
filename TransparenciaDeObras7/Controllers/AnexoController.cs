@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infraestrutura;
+using Infraestrutura.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,7 @@ namespace TransparenciaDeObras7.Controllers
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 
             // Determine o tipo MIME do arquivo
-            var mimeType = "application/octet-stream"; // Pode precisar ajustar com base no tipo de arquivo real
+            var mimeType = "application/pdf"; // Pode precisar ajustar com base no tipo de arquivo real
 
             // Construa o FileContentResult para retornar o arquivo ao cliente
             var fileContentResult = new FileContentResult(fileBytes, mimeType)
@@ -67,7 +68,7 @@ namespace TransparenciaDeObras7.Controllers
         }
         [HttpPut("{id}")]
         [DisableRateLimiting]
-        public IActionResult Update(long id, Anexo updatedAnexo)
+        public IActionResult Update(long id, [FromBody] AnexoDTO updatedAnexo)
         {
             var existingAnexo = _context.Anexos.Find(id);
 

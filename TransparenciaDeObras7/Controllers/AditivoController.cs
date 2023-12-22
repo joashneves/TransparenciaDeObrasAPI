@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infraestrutura;
+using Infraestrutura.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +71,7 @@ namespace TransparenciaDeObras7.Controllers
             return fileContentResult;
         }
         [HttpPut("{id}")]
-        public IActionResult Update(long id, Aditivo updatedAditivo)
+        public IActionResult Update(long id,[FromBody] AditivoDTO updatedAditivo)
         {
             var existingAditivo = _context.AditivoSet.Find(id);
 

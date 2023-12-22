@@ -21,7 +21,7 @@ namespace TransparenciaDeObras7
             {
                 options.AddFixedWindowLimiter(policyName: "fixed", configureOptions =>
                 {
-                    configureOptions.PermitLimit = 14;
+                    configureOptions.PermitLimit = 50;
                     configureOptions.Window = TimeSpan.FromSeconds(10);
                     configureOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                     configureOptions.QueueLimit = 10;
