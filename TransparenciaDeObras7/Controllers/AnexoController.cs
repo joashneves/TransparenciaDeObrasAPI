@@ -39,7 +39,6 @@ namespace TransparenciaDeObras7.Controllers
             return Ok(anexosadd.Entity);
         }
         [HttpGet("Download/{id}")]
-
         public IActionResult Download(long id)
         {
             // Obtenha o caminho do arquivo com base no ID (você precisará ajustar isso com base em como seus arquivos estão organizados)

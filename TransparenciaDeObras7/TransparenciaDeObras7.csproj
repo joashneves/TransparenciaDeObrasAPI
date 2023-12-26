@@ -54,6 +54,7 @@
     <Folder Include="Storage\Foto\" />
     <Folder Include="Storage\Anexo\" />
     <Folder Include="Storage\Aditivo\" />
+    <Folder Include="Storage\Medicao\" />
   </ItemGroup>
 
 </Project>

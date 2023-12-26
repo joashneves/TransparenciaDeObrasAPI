@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infraestrutura;
+using Infraestrutura.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -21,11 +22,48 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.Medicao.ToListAsync();
         }
         [HttpPost]
-        public IActionResult Add(Medicao medicao)
+        public IActionResult Add([FromForm] MedicaoViewModel medicaoViewModel)
         {
-            var medicaos = _context.Medicao.Add(medicao);
+            var filePath = Path.Combine("Storage/Medicao", medicaoViewModel.Medicao.FileName);
+            using Stream fileStream = new FileStream(filePath, FileMode.Create);
+            var medicao = new Medicao();
+            medicao.nome = medicaoViewModel.nome;
+            medicao.valorMedido = medicaoViewModel.valorMedido;
+            medicao.valorPago = medicaoViewModel.valorPago;
+            medicao.id_obras = medicaoViewModel.id_obras;
+            medicao.dataInicio = medicaoViewModel.dataInicio;
+            medicao.dataFinal = medicaoViewModel.dataFinal;
+            medicao.caminhoArquivo = filePath;
+            var medicaoAdd = _context.Medicao.Add(medicao);
             _context.SaveChanges();
-            return Ok(medicaos.Entity);
+            return Ok(medicaoAdd.Entity);
+        }
+        [HttpGet("Download/{id}")]
+        public IActionResult Download(long id)
+        {
+            // Obtenha o caminho do arquivo com base no ID (você precisará ajustar isso com base em como seus arquivos estão organizados)
+            var medicao = _context.Medicao.Find(id);
+
+            if (medicao == null)
+            {
+                return NotFound(); // Ou outra resposta adequada se o arquivo não for encontrado
+            }
+
+            var filePath = medicao.caminhoArquivo;
+
+            // Leia o arquivo em bytes
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            // Determine o tipo MIME do arquivo
+            var mimeType = "application/pdf"; // Pode precisar ajustar com base no tipo de arquivo real
+
+            // Construa o FileContentResult para retornar o arquivo ao cliente
+            var fileContentResult = new FileContentResult(fileBytes, mimeType)
+            {
+                FileDownloadName = medicao.caminhoArquivo // O nome do arquivo que o usuário verá ao baixar
+            };
+
+            return fileContentResult;
         }
         [HttpPut("{id}")]
         public IActionResult Update(long id, Medicao updatedMedicao)
