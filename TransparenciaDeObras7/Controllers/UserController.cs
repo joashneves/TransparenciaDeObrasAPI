@@ -76,6 +76,9 @@ namespace TransparenciaDeObras7.Controllers
                 return NotFound(); // Retorna 404 se a user não for encontrada
             }
 
+            // Calcula o hash da senha antes de adicionar o usuário
+            updatedUser.SetPassword(updatedUser.senha_hash);
+
             // Atualiza as propriedades da obra existente com base na obra recebida
             existingUser.nome = updatedUser.nome;
             existingUser.nomeCompleto = updatedUser.nomeCompleto;

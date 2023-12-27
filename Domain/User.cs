@@ -9,7 +9,7 @@ namespace Domain
     public class User
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string nome { get; set; }
         public string nomeCompleto { get; set; }
         public string email { get; set; }
