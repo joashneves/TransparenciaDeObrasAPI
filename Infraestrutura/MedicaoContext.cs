@@ -12,7 +12,7 @@ namespace Infraestrutura
     public class MedicaoContext : DbContext
     {
         private IConfiguration _configuration;
-        public DbSet<Medicao> Medicao { get; set; } = null;
+        public DbSet<Medicao> Medicao { get; set; }
         public MedicaoContext(IConfiguration configuration, DbContextOptions<MedicaoContext> options) : base(options)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

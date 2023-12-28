@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infraestrutura;
 using Infraestrutura.DTO;
+using Infraestrutura.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +27,14 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] AditivoViewModel aditivoViewModel)
         {
+            if (aditivoViewModel.Aditivo.ContentType.ToLower() != "application/pdf")
+            {
+                return BadRequest("Apenas arquivos PDF são permitidos.");
+            }
+
             var filePath = Path.Combine("Storage/Anexo", aditivoViewModel.Aditivo.FileName);
-            using Stream fileStream = new FileStream(filePath, FileMode.Create);
-            aditivoViewModel.Aditivo.CopyTo(fileStream);
+
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create)) { aditivoViewModel.Aditivo.CopyTo(fileStream);  } 
             var aditivo = new Aditivo();
             aditivo.nome = aditivoViewModel.nome;
             aditivo.id_obras = aditivoViewModel.id_obras;

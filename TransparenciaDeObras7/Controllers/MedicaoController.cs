@@ -17,15 +17,26 @@ namespace TransparenciaDeObras7.Controllers
             _context = context ?? throw new ArgumentException(nameof(context));
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Medicao>>> GetUserSet()
+        public async Task<ActionResult<IEnumerable<Medicao>>> GetMedicaoSet()
         {
             return await _context.Medicao.ToListAsync();
         }
         [HttpPost]
         public IActionResult Add([FromForm] MedicaoViewModel medicaoViewModel)
         {
+            // Verifique se o arquivo é um PDF
+            if (medicaoViewModel.Medicao.ContentType.ToLower() != "application/pdf")
+            {
+                return BadRequest("Apenas arquivos PDF são permitidos.");
+            }
+
             var filePath = Path.Combine("Storage/Medicao", medicaoViewModel.Medicao.FileName);
-            using Stream fileStream = new FileStream(filePath, FileMode.Create);
+
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                medicaoViewModel.Medicao.CopyTo(fileStream);
+            }
+
             var medicao = new Medicao();
             medicao.nome = medicaoViewModel.nome;
             medicao.valorMedido = medicaoViewModel.valorMedido;
@@ -34,8 +45,10 @@ namespace TransparenciaDeObras7.Controllers
             medicao.dataInicio = medicaoViewModel.dataInicio;
             medicao.dataFinal = medicaoViewModel.dataFinal;
             medicao.caminhoArquivo = filePath;
+
             var medicaoAdd = _context.Medicao.Add(medicao);
             _context.SaveChanges();
+
             return Ok(medicaoAdd.Entity);
         }
         [HttpGet("Download/{id}")]

@@ -55,6 +55,7 @@ namespace TransparenciaDeObras7.Controllers
                 isCadastrarAnexo = u.isCadastrarAnexo,
                 isCadastrarAditivo = u.isCadastrarAditivo,
                 isCadastrarMedicao = u.isCadastrarMedicao,
+                isCadastrarFiscalGestor = u.isCadastrarFiscalGestor,
                 isCadastrarFoto = u.isCadastrarFoto,
                 isCadastrarOpcao = u.isCadastrarOpcao,
 
@@ -89,6 +90,7 @@ namespace TransparenciaDeObras7.Controllers
             existingUser.isCadastrarAnexo = updatedUser.isCadastrarAnexo;
             existingUser.isCadastrarAditivo = updatedUser.isCadastrarAditivo;
             existingUser.isCadastrarMedicao = updatedUser.isCadastrarMedicao;
+            existingUser.isCadastrarFiscalGestor = updatedUser.isCadastrarFiscalGestor;
             existingUser.isCadastrarFoto = updatedUser.isCadastrarFoto;
             existingUser.isCadastrarOpcao = updatedUser.isCadastrarOpcao;
 

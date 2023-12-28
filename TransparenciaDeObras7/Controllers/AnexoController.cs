@@ -25,9 +25,12 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] AnexoViewModel anexosViewModel)
         {
+            if (anexosViewModel.Anexo.ContentType.ToLower() != "application/pdf") { return BadRequest("Apenas arquivos PDF são permitidos."); }
+
             var filePath = Path.Combine("Storage/Anexo", anexosViewModel.Anexo.FileName);
-            using Stream fileStream = new FileStream(filePath, FileMode.Create);
-            anexosViewModel.Anexo.CopyTo(fileStream);
+
+
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create)) { anexosViewModel.Anexo.CopyTo(fileStream);  } 
             var anexos = new Anexo();
             anexos.nome = anexosViewModel.nome;
             anexos.id_obras = anexosViewModel.id_obras;
