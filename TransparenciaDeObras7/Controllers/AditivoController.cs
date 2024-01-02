@@ -13,11 +13,12 @@ namespace TransparenciaDeObras7.Controllers
     [Route("[Controller]")]
     public class AditivoController : Controller
     {
-        
         private readonly AditivoContext _context;
-        public AditivoController(AditivoContext context)
+        private readonly ObraContext _contextObra;
+        public AditivoController(AditivoContext context, ObraContext contextObra)
         {
             _context = context ?? throw new ArgumentException(nameof(context));
+            _contextObra = contextObra ?? throw new ArgumentException(nameof(context));
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Aditivo>>> GetAditivoSet()
@@ -47,7 +48,48 @@ namespace TransparenciaDeObras7.Controllers
             aditivo.caminhoArquivo = filePath;
             var aditivoadd = _context.AditivoSet.Add(aditivo);
             _context.SaveChanges();
+
+            AtualizarValorNaObra(aditivo);
+            AtualizarValorDiasNaObra(aditivo);
+
             return Ok(aditivoadd.Entity);
+        }
+        private void AtualizarValorNaObra(Aditivo aditivo)
+        {
+            // Lógica para recuperar a obra correspondente e atualizar o valor
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+
+            if (obra != null)
+            {
+                // Atualize o valor na obra com base na nova medição
+                obra.valorEmpenhado += aditivo.valorContratual;
+
+                // Salve as alterações no banco de dados
+                _contextObra.SaveChanges();
+            }
+            else
+            {
+                // Lida com o caso em que a obra não foi encontrada (opcional)
+            }
+        }
+        private void AtualizarValorDiasNaObra(Aditivo aditivo)
+        {
+            // Lógica para recuperar a obra correspondente e atualizar o valor
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+
+            if (obra != null)
+            {
+                if (obra.prazoInicial == 0) {
+                    // Atualize o valor na obra com base na nova medição
+                    obra.prazoInicial += aditivo.prazo;
+                }else if (obra.prazoInicial != 0)
+                {
+                    obra.prazoFinal += aditivo.prazo;
+                }
+                // Salve as alterações no banco de dados
+                _contextObra.SaveChanges();
+            }
+
         }
         [HttpGet("Download/{id}")]
         public IActionResult Download(long id)

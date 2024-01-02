@@ -47,7 +47,10 @@ namespace TransparenciaDeObras7.Controllers
             existingObra.numeroDetalhe = updatedObra.numeroDetalhe;
             existingObra.orgaoPublicoDetalhe = updatedObra.orgaoPublicoDetalhe;
             existingObra.tipoObraDetalhe = updatedObra.tipoObraDetalhe;
-            existingObra.valorPagoDetalhe = updatedObra.valorPagoDetalhe;
+            existingObra.prazoInicial = updatedObra.prazoInicial;
+            existingObra.prazoFinal = updatedObra.prazoFinal;
+            existingObra.valorEmpenhado = updatedObra.valorEmpenhado;
+            existingObra.valorLiquidado = updatedObra.valorLiquidado;
             existingObra.nomeContratadaDetalhe = updatedObra.nomeContratadaDetalhe;
             existingObra.cnpjContratadaObraDetalhe = updatedObra.cnpjContratadaObraDetalhe;
             existingObra.anoDetalhe = updatedObra.anoDetalhe;

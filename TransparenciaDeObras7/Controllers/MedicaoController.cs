@@ -12,9 +12,11 @@ namespace TransparenciaDeObras7.Controllers
     public class MedicaoController : ControllerBase
     {
         private readonly MedicaoContext _context;
-        public MedicaoController(MedicaoContext context)
+        private readonly ObraContext _contextObra;
+        public MedicaoController(MedicaoContext context, ObraContext contextObra)
         {
             _context = context ?? throw new ArgumentException(nameof(context));
+            _contextObra = contextObra ?? throw new ArgumentException(nameof(contextObra));
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Medicao>>> GetMedicaoSet()
@@ -49,7 +51,28 @@ namespace TransparenciaDeObras7.Controllers
             var medicaoAdd = _context.Medicao.Add(medicao);
             _context.SaveChanges();
 
+            // Atualize o valor na obra correspondente
+            AtualizarValorNaObra(medicao);
+
             return Ok(medicaoAdd.Entity);
+        }
+        private void AtualizarValorNaObra(Medicao medicao)
+        {
+            // Lógica para recuperar a obra correspondente e atualizar o valor
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == medicao.id_obras);
+
+            if (obra != null)
+            {
+                // Atualize o valor na obra com base na nova medição
+                obra.valorEmpenhado += medicao.valorMedido;
+
+                // Salve as alterações no banco de dados
+                _contextObra.SaveChanges();
+            }
+            else
+            {
+                // Lida com o caso em que a obra não foi encontrada (opcional)
+            }
         }
         [HttpGet("Download/{id}")]
         public IActionResult Download(long id)
