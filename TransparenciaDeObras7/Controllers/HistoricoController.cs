@@ -17,9 +17,9 @@ namespace TransparenciaDeObras7.Controllers
             _context = context ?? throw new ArgumentException(nameof(context));
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Historico>>> GetHistoricoSet()
+        public async Task<ActionResult<IEnumerable<Historico>>> GetHistoricoSet(int pageNumber, int pageQuantity)
         {
-            return await _context.HistoricoSet.ToListAsync();
+            return await _context.HistoricoSet.Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
         }
         [HttpPost]
         public IActionResult Add(Historico historico)

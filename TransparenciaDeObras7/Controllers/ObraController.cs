@@ -22,9 +22,9 @@ namespace TransparenciaDeObras7.Controllers
             return await _context.Obras.ToListAsync();
         }
         [HttpGet("public")]
-        public async Task<ActionResult<IEnumerable<Obra>>> GetPublicObraSet()
+        public async Task<ActionResult<IEnumerable<Obra>>> GetPublicObraSet(int pageNumber, int pageQuantity)
         {
-            var obrasPublicadas = await _context.Obras.Where(o => o.publicadoDetalhe).ToListAsync();
+            var obrasPublicadas = await _context.Obras.Where(o => o.publicadoDetalhe).Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
             return Ok(obrasPublicadas);
         }
         [HttpPost]
@@ -34,8 +34,6 @@ namespace TransparenciaDeObras7.Controllers
             _context.SaveChanges();
             return Ok(obras.Entity);
         }
-
-
         [HttpPut("{id}")]
         public IActionResult Update(long id, Obra updatedObra)
         {
