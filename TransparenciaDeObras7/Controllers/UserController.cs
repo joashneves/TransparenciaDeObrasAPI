@@ -22,9 +22,9 @@ namespace TransparenciaDeObras7.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<User>>> GetUserSet()
+        public async Task<ActionResult<IEnumerable<User>>> GetUserSet(int pageNumber, int pageQuantity)
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
         }
         [HttpPost]
         [DisableRateLimiting]
