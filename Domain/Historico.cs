@@ -14,6 +14,7 @@ namespace Domain
         public long id_obras { get; set; }
         public string nomeObra { get; set; }
         public string nome { get; set; }
+        public string nomePerfil { get; set; }
         public DateTime dataHora { get; set; }
     }
 }

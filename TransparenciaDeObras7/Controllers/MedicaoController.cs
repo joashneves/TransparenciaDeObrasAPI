@@ -70,10 +70,6 @@ namespace TransparenciaDeObras7.Controllers
                 // Salve as alterações no banco de dados
                 _contextObra.SaveChanges();
             }
-            else
-            {
-                // Lida com o caso em que a obra não foi encontrada (opcional)
-            }
         }
         [HttpGet("Download/{id}")]
         public IActionResult Download(long id)
@@ -127,7 +123,7 @@ namespace TransparenciaDeObras7.Controllers
                 _context.SaveChanges(); // Salva as alterações no banco de dados
 
                 // Atualize o valor na obra correspondente
-                AtualizarValorNaObra(existingMedicao.id_obras, updatedMedicao.valorMedido - valorMedidoOriginal);
+                AtualizarValorNaObra(existingMedicao, updatedMedicao.valorMedido - valorMedidoOriginal );
 
                 return Ok(existingMedicao); // Retorna a obra atualizada
             }
@@ -137,17 +133,17 @@ namespace TransparenciaDeObras7.Controllers
                 return StatusCode(500, "Erro interno do servidor ao atualizar a obra.");
             }
         }
-        private void AtualizarValorNaObra(long idObra, double diferencaValorMedido)
+        private void AtualizarValorNaObra(Medicao medicao, double diferencaValorMedido)
         {
-            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == idObra);
-            Console.WriteLine(obra);
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == medicao.id_obras);
+
             if (obra != null)
             {
                 // Atualize o valor na obra com base na diferença dos valores de medição
                 obra.valorEmpenhado += diferencaValorMedido;
 
                 // Salve as alterações no banco de dados
-                _context.SaveChanges();
+                _contextObra.SaveChanges();
             }
             // Não é necessário retornar uma resposta específica aqui, pois o objetivo é apenas atualizar a obra.
         }

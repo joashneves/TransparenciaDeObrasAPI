@@ -128,6 +128,10 @@ namespace TransparenciaDeObras7.Controllers
                 return NotFound(); // Retorna 404 se a Aditivo não for encontrada
             }
 
+            // Salve o valor e dia original antes da atualização
+            double valorContratudalOriginal = existingAditivo.valorContratual;
+            int valorPrazoOriginal = existingAditivo.prazo;
+
             // Atualiza as propriedades da obra existente com base na obra recebida
             existingAditivo.nome = updatedAditivo.nome;
             existingAditivo.ano = updatedAditivo.ano;
@@ -140,6 +144,9 @@ namespace TransparenciaDeObras7.Controllers
             try
             {
                 _context.SaveChanges(); // Salva as alterações no banco de dados
+
+                AtualizarValorNaObra(existingAditivo, updatedAditivo.valorContratual - valorContratudalOriginal);
+                AtualizarPrazoNaObra(existingAditivo, updatedAditivo.prazo - valorPrazoOriginal);
                 return Ok(existingAditivo); // Retorna a obra atualizada
             }
             catch (DbUpdateException)
@@ -147,6 +154,34 @@ namespace TransparenciaDeObras7.Controllers
                 // Trate exceções de falha na atualização do banco de dados, se necessário
                 return StatusCode(500, "Erro interno do servidor ao atualizar a obra.");
             }
+        }
+        private void AtualizarValorNaObra(Aditivo aditivo, double diferencaValorAditivo)
+        {
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+
+            if (obra != null)
+            {
+                // Atualize o valor na obra com base na diferença dos valores de medição
+                obra.valorEmpenhado += diferencaValorAditivo;
+
+                // Salve as alterações no banco de dados
+                _contextObra.SaveChanges();
+            }
+            // Não é necessário retornar uma resposta específica aqui, pois o objetivo é apenas atualizar a obra.
+        }
+        private void AtualizarPrazoNaObra(Aditivo aditivo, int diferencaPrazoAditivo)
+        {
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+
+            if (obra != null)
+            {
+                // Atualize o valor na obra com base na diferença dos valores de medição
+                obra.prazoFinal += diferencaPrazoAditivo;
+
+                // Salve as alterações no banco de dados
+                _contextObra.SaveChanges();
+            }
+            // Não é necessário retornar uma resposta específica aqui, pois o objetivo é apenas atualizar a obra.
         }
     }
 }
