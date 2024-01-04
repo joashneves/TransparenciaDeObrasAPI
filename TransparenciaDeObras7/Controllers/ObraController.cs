@@ -21,6 +21,11 @@ namespace TransparenciaDeObras7.Controllers
         {
             return await _context.Obras.ToListAsync();
         }
+        [HttpGet("Pag")]
+        public async Task<ActionResult<IEnumerable<Obra>>> GetPagObraSet(int pageNumber, int pageQuantity)
+        {
+            return await _context.Obras.Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
+        }
         [HttpGet("public")]
         public async Task<ActionResult<IEnumerable<Obra>>> GetPublicObraSet(int pageNumber, int pageQuantity)
         {

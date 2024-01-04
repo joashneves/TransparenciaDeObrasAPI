@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infraestrutura;
+using Infraestrutura.DTO;
 using Infraestrutura.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -102,7 +103,7 @@ namespace TransparenciaDeObras7.Controllers
             return fileContentResult;
         }
         [HttpPut("{id}")]
-        public IActionResult Update(long id, Medicao updatedMedicao)
+        public IActionResult Update(long id, MedicaoDTO updatedMedicao)
         {
             var existingMedicao = _context.Medicao.Find(id);
 
@@ -139,7 +140,7 @@ namespace TransparenciaDeObras7.Controllers
         private void AtualizarValorNaObra(long idObra, double diferencaValorMedido)
         {
             var obra = _contextObra.Obras.FirstOrDefault(o => o.id == idObra);
-
+            Console.WriteLine(obra);
             if (obra != null)
             {
                 // Atualize o valor na obra com base na diferença dos valores de medição
