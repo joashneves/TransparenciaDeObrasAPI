@@ -108,5 +108,27 @@ namespace TransparenciaDeObras7.Controllers
                 return StatusCode(500, "Erro interno do servidor ao atualizar a obra.");
             }
         }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            var user = _context.Users.Find(id);
+
+            if (user == null)
+            {
+                return NotFound(); // Retorna 404 se a foto não for encontrada
+            }
+
+            try
+            {
+                _context.Users.Remove(user); // Remova a foto do contexto do Entity Framework
+                _context.SaveChanges(); // Salve as alterações no banco de dados
+                return NoContent(); // Retorna 204 No Content para indicar sucesso
+            }
+            catch (Exception)
+            {
+                // Trate exceções de falha na exclusão do arquivo ou no banco de dados, se necessário
+                return StatusCode(500, "Erro interno do servidor ao excluir a foto.");
+            }
+        }
     }
 }
