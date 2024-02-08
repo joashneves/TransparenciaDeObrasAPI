@@ -1,12 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Infraestrutura;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using MySql.Data.MySqlClient;
 using System.Text;
 using System.Threading;
 using System.Threading.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
+using Microsoft.AspNetCore;
 
 namespace TransparenciaDeObras7
 {
@@ -63,7 +67,8 @@ namespace TransparenciaDeObras7
                     policy =>
                     {
                         policy.WithOrigins("http://localhost:5173",
-                            "https://localhost:7067/User").AllowAnyHeader().AllowAnyMethod() ;
+                            "https://localhost:7067/User",
+                            "http://172.31.254.8:5173/").AllowAnyHeader().AllowAnyMethod();
                     });
             });
 
@@ -131,13 +136,21 @@ namespace TransparenciaDeObras7
 
             });
 
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            if (!app.Environment.IsProduction())
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next(context);
+                });
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -162,5 +175,10 @@ namespace TransparenciaDeObras7
 
             app.Run();
         }
+
     }
+
+
+
+
 }
