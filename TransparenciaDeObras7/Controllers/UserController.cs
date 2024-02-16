@@ -130,5 +130,18 @@ namespace TransparenciaDeObras7.Controllers
                 return StatusCode(500, "Erro interno do servidor ao excluir a foto.");
             }
         }
+        [HttpPut("login")]
+        public IActionResult Login(User userModel)
+        {
+            var user = _context.Users
+                .SingleOrDefault(u => u.nome == userModel.nome && u.senha_hash == userModel.senha_hash);
+
+            if (user == null)
+            {
+                return BadRequest("Usuário ou senha inválidos.");
+            }
+
+            return Ok(user);
+        }
     }
 }
