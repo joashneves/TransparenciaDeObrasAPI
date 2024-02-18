@@ -21,14 +21,14 @@ namespace TransparenciaDeObras7.Controllers
             _context = context ?? throw new ArgumentException(nameof(context));
         }
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<User>>> GetUserSet(int pageNumber, int pageQuantity)
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<User>>> GetUserSet()
         {
-            return await _context.Users.Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
+            return await _context.Users.ToListAsync();
         }
         [HttpPost]
         [DisableRateLimiting]
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Add(User user)
         {
             // Calcula o hash da senha antes de adicionar o usuário
@@ -131,8 +131,13 @@ namespace TransparenciaDeObras7.Controllers
             }
         }
         [HttpPut("login")]
+        [AllowAnonymous]
         public IActionResult Login(User userModel)
         {
+
+            // Calcula o hash da senha antes de adicionar o usuário
+            userModel.SetPassword(userModel.senha_hash);
+
             var user = _context.Users
                 .SingleOrDefault(u => u.nome == userModel.nome && u.senha_hash == userModel.senha_hash);
 
