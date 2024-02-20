@@ -48,9 +48,11 @@ namespace TransparenciaDeObras7.Controllers
 
         [HttpGet("public")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetPublicUserSet()
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetPublicUserSet(int page, int pageSize)
         {
             var users = await _context.Users
+                .Skip((page) * pageSize) // Pula os registros das páginas anteriores
+                .Take(pageSize) // Define o tamanho da página
                 .Select(u => new UserViewModel
                 {
                 Id = u.Id,
