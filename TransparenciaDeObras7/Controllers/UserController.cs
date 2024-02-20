@@ -34,6 +34,13 @@ namespace TransparenciaDeObras7.Controllers
             // Calcula o hash da senha antes de adicionar o usuário
             user.SetPassword(user.senha_hash);
 
+            // Verifica se já existe um usuário com o mesmo nome de usuário
+            var existingUser = _context.Users.FirstOrDefault(u => u.nome == user.nome);
+            if (existingUser != null)
+            {
+                return Conflict("Já existe um usuário com este nome de usuário.");
+            }
+
             var users = _context.Users.Add(user);
             _context.SaveChanges();
             return Ok(users.Entity);

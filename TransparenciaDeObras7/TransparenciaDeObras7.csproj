@@ -7,30 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="NovaPasta\**" />
     <Compile Remove="Repository\**" />
-    <Content Remove="NovaPasta\**" />
     <Content Remove="Repository\**" />
-    <EmbeddedResource Remove="NovaPasta\**" />
     <EmbeddedResource Remove="Repository\**" />
-    <None Remove="NovaPasta\**" />
     <None Remove="Repository\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="WeatherForecast.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Storage\Anexo\20231111_18610_Avaliação Processual 2023-2-2B.pdf" />
-    <None Remove="Storage\Anexo\novembro 123413.pdf" />
-    <None Remove="Storage\Anexo\trabalho %281%29.pdf" />
-    <None Remove="Storage\Foto\072cdcc40c714f0aaf5454910c4346fc.jpg" />
-    <None Remove="Storage\Foto\4945bdafee9952fa778cb4187c37c9d5.jpg" />
-    <None Remove="Storage\Foto\9b62bb74b2fbdc12a85bbc05a71c5413.jpg" />
-    <None Remove="Storage\Foto\cidaadePresidenteKnnedy.jfif" />
-    <None Remove="Storage\Foto\images.jfif" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,9 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Storage\Aditivo\" />
+    <Folder Include="Storage\Anexo\" />
     <Folder Include="Storage\Foto\" />
     <Folder Include="Storage\Anexo\" />
-    <Folder Include="Storage\Aditivo\" />
     <Folder Include="Storage\Medicao\" />
   </ItemGroup>
 
