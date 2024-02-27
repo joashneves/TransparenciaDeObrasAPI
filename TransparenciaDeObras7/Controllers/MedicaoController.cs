@@ -99,13 +99,26 @@ namespace TransparenciaDeObras7.Controllers
             return fileContentResult;
         }
         [HttpPut("{id}")]
-        public IActionResult Update(long id, MedicaoDTO updatedMedicao)
+        public IActionResult Update(long id, [FromForm] MedicaoViewModel updatedMedicao)
         {
             var existingMedicao = _context.Medicao.Find(id);
 
             if (existingMedicao == null)
             {
                 return NotFound(); // Retorna 404 se a obra não for encontrada
+            }
+
+            // Verifique se o arquivo é um PDF
+            if (updatedMedicao.Medicao.ContentType.ToLower() != "application/pdf")
+            {
+                return BadRequest("Apenas arquivos PDF são permitidos.");
+            }
+
+            var filePath = Path.Combine("Storage/Medicao", updatedMedicao.Medicao.FileName);
+
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                updatedMedicao.Medicao.CopyTo(fileStream);
             }
 
             // Salve o valor original antes da atualização
@@ -117,6 +130,7 @@ namespace TransparenciaDeObras7.Controllers
             existingMedicao.dataFinal = updatedMedicao.dataFinal;
             existingMedicao.valorPago = updatedMedicao.valorPago;
             existingMedicao.valorMedido = updatedMedicao.valorMedido;
+            existingMedicao.caminhoArquivo = filePath;
 
             try
             {

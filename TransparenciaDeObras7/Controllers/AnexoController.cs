@@ -70,7 +70,7 @@ namespace TransparenciaDeObras7.Controllers
         }
         [HttpPut("{id}")]
         [DisableRateLimiting]
-        public IActionResult Update(long id, [FromBody] AnexoDTO updatedAnexo)
+        public IActionResult Update(long id, [FromForm] AnexoViewModel updatedAnexo)
         {
             var existingAnexo = _context.Anexos.Find(id);
 
@@ -79,10 +79,15 @@ namespace TransparenciaDeObras7.Controllers
                 return NotFound(); // Retorna 404 se a Anexo não for encontrada
             }
 
+            if (updatedAnexo.Anexo.ContentType.ToLower() != "application/pdf") { return BadRequest("Apenas arquivos PDF são permitidos."); }
+
+            var filePath = Path.Combine("Storage/Anexo", updatedAnexo.Anexo.FileName);
+
             // Atualiza as propriedades da obra existente com base na obra recebida
             existingAnexo.nome = updatedAnexo.nome;
             existingAnexo.descricao = updatedAnexo.descricao;
             existingAnexo.dataDocumento = updatedAnexo.dataDocumento;
+            existingAnexo.caminhoArquivo = filePath;
 
             try
             {

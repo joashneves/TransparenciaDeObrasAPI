@@ -119,7 +119,7 @@ namespace TransparenciaDeObras7.Controllers
             return fileContentResult;
         }
         [HttpPut("{id}")]
-        public IActionResult Update(long id,[FromBody] AditivoDTO updatedAditivo)
+        public IActionResult Update(long id, [FromForm] AditivoViewModel updatedAditivo)
         {
             var existingAditivo = _context.AditivoSet.Find(id);
 
@@ -127,6 +127,12 @@ namespace TransparenciaDeObras7.Controllers
             {
                 return NotFound(); // Retorna 404 se a Aditivo não for encontrada
             }
+            if (updatedAditivo.Aditivo.ContentType.ToLower() != "application/pdf")
+            {
+                return BadRequest("Apenas arquivos PDF são permitidos.");
+            }
+
+            var filePath = Path.Combine("Storage/Anexo", updatedAditivo.Aditivo.FileName);
 
             // Salve o valor e dia original antes da atualização
             double valorContratudalOriginal = existingAditivo.valorContratual;
@@ -140,6 +146,7 @@ namespace TransparenciaDeObras7.Controllers
             existingAditivo.casoAditivo = updatedAditivo.casoAditivo;
             existingAditivo.prazo = updatedAditivo.prazo;
             existingAditivo.valorContratual = updatedAditivo.valorContratual;
+            existingAditivo.caminhoArquivo = filePath;
 
             try
             {
