@@ -25,6 +25,15 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] AnexoViewModel anexosViewModel)
         {
+            // Obtenha o último ID da lista de __ no banco de dados
+            long ultimoId = _context.Anexos.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova __ como o próximo ID disponível
+            anexosViewModel.id = proximoId;
+
             if (anexosViewModel.Anexo.ContentType.ToLower() != "application/pdf") { return BadRequest("Apenas arquivos PDF são permitidos."); }
 
             var filePath = Path.Combine("Storage/Anexo", anexosViewModel.Anexo.FileName);

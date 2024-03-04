@@ -24,6 +24,15 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm]FotoViewModel fotoViewModel)
         {
+            // Obtenha o último ID da lista de foto no banco de dados
+            long ultimoId = _context.Foto.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova foto como o próximo ID disponível
+            fotoViewModel.id = proximoId;
+
             var filePath = Path.Combine("Storage/Foto", fotoViewModel.Photo.FileName);
             using Stream fileStream = new FileStream(filePath, FileMode.Create);
             fotoViewModel.Photo.CopyTo(fileStream);

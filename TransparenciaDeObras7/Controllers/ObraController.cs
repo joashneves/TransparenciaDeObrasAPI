@@ -35,6 +35,15 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add(Obra obra)
         {
+            // Obtenha o último ID da lista de obras no banco de dados
+            long ultimoId = _context.Obras.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova obra como o próximo ID disponível
+            obra.id = proximoId;
+
             var obras = _context.Obras.Add(obra);
             _context.SaveChanges();
             return Ok(obras.Entity);

@@ -27,6 +27,15 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] MedicaoViewModel medicaoViewModel)
         {
+            // Obtenha o último ID da lista de users no banco de dados
+            long ultimoId = _context.Medicao.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova user como o próximo ID disponível
+            medicaoViewModel.id = proximoId;
+
             // Verifique se o arquivo é um PDF
             if (medicaoViewModel.Medicao.ContentType.ToLower() != "application/pdf")
             {

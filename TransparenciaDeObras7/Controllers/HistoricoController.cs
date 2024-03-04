@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infraestrutura;
+using Infraestrutura.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,15 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add(Historico historico)
         {
+            // Obtenha o último ID da lista de historico no banco de dados
+            long ultimoId = _context.HistoricoSet.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova historico como o próximo ID disponível
+            historico.id = proximoId;
+
             var historicos = _context.HistoricoSet.Add(historico);
             _context.SaveChanges();
             return Ok(historicos.Entity);

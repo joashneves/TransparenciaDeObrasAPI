@@ -28,6 +28,15 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] AditivoViewModel aditivoViewModel)
         {
+            // Obtenha o último ID da lista de __ no banco de dados
+            long ultimoId = _context.AditivoSet.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova __ como o próximo ID disponível
+            aditivoViewModel.id = proximoId;
+
             if (aditivoViewModel.Aditivo.ContentType.ToLower() != "application/pdf")
             {
                 return BadRequest("Apenas arquivos PDF são permitidos.");

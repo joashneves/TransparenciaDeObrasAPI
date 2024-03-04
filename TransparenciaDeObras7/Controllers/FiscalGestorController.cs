@@ -3,6 +3,7 @@ using Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using TransparenciaDeObras7.ViewModel;
 
 namespace TransparenciaDeObras7.Controllers
 {
@@ -23,6 +24,14 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost]
         public IActionResult Add(FiscalGestor fiscalGestor)
         {
+            // Obtenha o último ID da lista de __ no banco de dados
+            long ultimoId = _context.FiscalGestors.Max(o => o.id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova __ como o próximo ID disponível
+            fiscalGestor.id = proximoId;
             var fiscalGestors = _context.FiscalGestors.Add(fiscalGestor);
             _context.SaveChanges();
             return Ok(fiscalGestors.Entity);

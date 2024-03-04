@@ -31,6 +31,15 @@ namespace TransparenciaDeObras7.Controllers
         [AllowAnonymous]
         public IActionResult Add(User user)
         {
+            // Obtenha o último ID da lista de users no banco de dados
+            long ultimoId = _context.Users.Max(o => o.Id);
+
+            // Incremente esse ID em 1 para obter o próximo ID disponível
+            long proximoId = ultimoId + 1;
+
+            // Defina o ID da nova user como o próximo ID disponível
+            user.Id = proximoId;
+
             // Calcula o hash da senha antes de adicionar o usuário
             user.SetPassword(user.senha_hash);
 
