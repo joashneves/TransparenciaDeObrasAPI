@@ -9,12 +9,12 @@ namespace Infraestrutura.DTO
 {
     public class AditivoDTO
     {
-        public string nome { get; set; }
-        public int ano { get; set; }
-        public DateTime assinaturaData { get; set; }
-        public string tipo { get; set; }
-        public string casoAditivo { get; set; }
-        public int prazo { get; set; }
-        public double valorContratual { get; set; }
+        public string Nome { get; set; }
+        public int Ano { get; set; }
+        public DateTime AssinaturaData { get; set; }
+        public string Tipo { get; set; }
+        public string CasoAditivo { get; set; }
+        public int Prazo { get; set; }
+        public double ValorContratual { get; set; }
     }
 }

@@ -10,12 +10,12 @@ namespace Domain
     [Table("fiscalgestor")]
     public class FiscalGestor
     {
-        public long id {  get; set; }
-        public long id_obras { get; set; }
-        public string nome { get; set; }
-        public string papel { get; set; }
-        public string secretaria { get; set; }
-        public string email { get; set; }
+        public long Id {  get; set; }
+        public long Id_obras { get; set; }
+        public string Nome { get; set; }
+        public string Papel { get; set; }
+        public string Secretaria { get; set; }
+        public string Email { get; set; }
         
     }
 }

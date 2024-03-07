@@ -41,10 +41,10 @@ namespace TransparenciaDeObras7.Controllers
             user.Id = proximoId;
 
             // Calcula o hash da senha antes de adicionar o usuário
-            user.SetPassword(user.senha_hash);
+            user.SetPassword(user.Senha_hash);
 
             // Verifica se já existe um usuário com o mesmo nome de usuário
-            var existingUser = _context.Users.FirstOrDefault(u => u.nome == user.nome);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Nome == user.Nome);
             if (existingUser != null)
             {
                 return Conflict("Já existe um usuário com este nome de usuário.");
@@ -65,17 +65,17 @@ namespace TransparenciaDeObras7.Controllers
                 .Select(u => new UserViewModel
                 {
                 Id = u.Id,
-                nome = u.nome,
-                nomeCompleto = u.nomeCompleto,
-                email = u.email,
-                isAdm = u.isAdm,
-                isCadastrarProjeto = u.isCadastrarProjeto,
-                isCadastrarAnexo = u.isCadastrarAnexo,
-                isCadastrarAditivo = u.isCadastrarAditivo,
-                isCadastrarMedicao = u.isCadastrarMedicao,
-                isCadastrarFiscalGestor = u.isCadastrarFiscalGestor,
-                isCadastrarFoto = u.isCadastrarFoto,
-                isCadastrarOpcao = u.isCadastrarOpcao,
+                Nome = u.Nome,
+                NomeCompleto = u.NomeCompleto,
+                Email = u.Email,
+                IsAdm = u.IsAdm,
+                IsCadastrarProjeto = u.IsCadastrarProjeto,
+                IsCadastrarAnexo = u.IsCadastrarAnexo,
+                IsCadastrarAditivo = u.IsCadastrarAditivo,
+                IsCadastrarMedicao = u.IsCadastrarMedicao,
+                IsCadastrarFiscalGestor = u.IsCadastrarFiscalGestor,
+                IsCadastrarFoto = u.IsCadastrarFoto,
+                IsCadastrarOpcao = u.IsCadastrarOpcao,
 
                 })
                 .ToListAsync();
@@ -96,24 +96,24 @@ namespace TransparenciaDeObras7.Controllers
             }
 
             // Calcula o hash da senha antes de adicionar o usuário
-            updatedUser.SetPassword(updatedUser.senha_hash);
+            updatedUser.SetPassword(updatedUser.Senha_hash);
 
             // Atualiza as propriedades da obra existente com base na obra recebida
-            existingUser.nome = updatedUser.nome;
-            existingUser.nomeCompleto = updatedUser.nomeCompleto;
-            existingUser.email = updatedUser.email;
-            existingUser.senha_hash = updatedUser.senha_hash;
-            existingUser.isAdm = updatedUser.isAdm;
-            existingUser.isCadastrarProjeto = updatedUser.isCadastrarProjeto;
-            existingUser.isCadastrarAnexo = updatedUser.isCadastrarAnexo;
-            existingUser.isCadastrarAditivo = updatedUser.isCadastrarAditivo;
-            existingUser.isCadastrarMedicao = updatedUser.isCadastrarMedicao;
-            existingUser.isCadastrarFiscalGestor = updatedUser.isCadastrarFiscalGestor;
-            existingUser.isCadastrarFoto = updatedUser.isCadastrarFoto;
-            existingUser.isCadastrarOpcao = updatedUser.isCadastrarOpcao;
+            existingUser.Nome = updatedUser.Nome;
+            existingUser.NomeCompleto = updatedUser.NomeCompleto;
+            existingUser.Email = updatedUser.Email;
+            existingUser.Senha_hash = updatedUser.Senha_hash;
+            existingUser.IsAdm = updatedUser.IsAdm;
+            existingUser.IsCadastrarProjeto = updatedUser.IsCadastrarProjeto;
+            existingUser.IsCadastrarAnexo = updatedUser.IsCadastrarAnexo;
+            existingUser.IsCadastrarAditivo = updatedUser.IsCadastrarAditivo;
+            existingUser.IsCadastrarMedicao = updatedUser.IsCadastrarMedicao;
+            existingUser.IsCadastrarFiscalGestor = updatedUser.IsCadastrarFiscalGestor;
+            existingUser.IsCadastrarFoto = updatedUser.IsCadastrarFoto;
+            existingUser.IsCadastrarOpcao = updatedUser.IsCadastrarOpcao;
 
             // Calcula o hash da senha antes de adicionar o usuário
-            updatedUser.SetPassword(updatedUser.senha_hash);
+            updatedUser.SetPassword(updatedUser.Senha_hash);
 
             try
             {
@@ -154,10 +154,10 @@ namespace TransparenciaDeObras7.Controllers
         {
 
             // Calcula o hash da senha antes de adicionar o usuário
-            userModel.SetPassword(userModel.senha_hash);
+            userModel.SetPassword(userModel.Senha_hash);
 
             var user = _context.Users
-                .SingleOrDefault(u => u.nome == userModel.nome && u.senha_hash == userModel.senha_hash);
+                .SingleOrDefault(u => u.Nome == userModel.Nome && u.Senha_hash == userModel.Senha_hash);
 
             if (user == null)
             {

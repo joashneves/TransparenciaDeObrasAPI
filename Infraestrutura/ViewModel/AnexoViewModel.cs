@@ -4,11 +4,11 @@ namespace TransparenciaDeObras7.ViewModel
 {
     public class AnexoViewModel
     {
-        public long id { get; set; }
-        public long id_obras { get; set; }
-        public string nome { get; set; }
-        public string descricao { get; set; }
-        public DateTime dataDocumento { get; set; }
+        public long Id { get; set; }
+        public long Id_obras { get; set; }
+        public string Nome { get; set; }
+        public string Descricao { get; set; }
+        public DateTime DataDocumento { get; set; }
         public IFormFile Anexo { get; set; }
     }
 }

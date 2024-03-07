@@ -11,9 +11,9 @@ namespace Domain
     [Table("foto")]
     public class Foto
     {
-        public long id {  get; set; }
-        public long id_obras { get; set; }
-        public string nome { get; set; }
-        public string caminhoArquivo { get; set; }
+        public long Id {  get; set; }
+        public long Id_obras { get; set; }
+        public string Nome { get; set; }
+        public string CaminhoArquivo { get; set; }
     }
 }

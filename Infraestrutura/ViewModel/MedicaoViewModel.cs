@@ -9,13 +9,13 @@ namespace Infraestrutura.ViewModel
 {
     public class MedicaoViewModel
     { 
-        public long id { get; set; }
-        public long id_obras { get; set; }
-        public string nome { get; set; }
-        public DateTime dataInicio { get; set; }
-        public DateTime dataFinal { get; set; }
-        public double valorPago { get; set; }
-        public double valorMedido { get; set; }
+        public long Id { get; set; }
+        public long Id_obras { get; set; }
+        public string Nome { get; set; }
+        public DateTime DataInicio { get; set; }
+        public DateTime DataFinal { get; set; }
+        public double ValorPago { get; set; }
+        public double ValorMedido { get; set; }
         public IFormFile Medicao { get; set; }
     } 
 }

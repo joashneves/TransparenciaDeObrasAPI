@@ -26,13 +26,13 @@ namespace TransparenciaDeObras7.Controllers
         public IActionResult Add(Historico historico)
         {
             // Obtenha o último ID da lista de historico no banco de dados
-            long ultimoId = _context.HistoricoSet.Max(o => o.id);
+            long ultimoId = _context.HistoricoSet.Max(o => o.Id);
 
             // Incremente esse ID em 1 para obter o próximo ID disponível
             long proximoId = ultimoId + 1;
 
             // Defina o ID da nova historico como o próximo ID disponível
-            historico.id = proximoId;
+            historico.Id = proximoId;
 
             var historicos = _context.HistoricoSet.Add(historico);
             _context.SaveChanges();

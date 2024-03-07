@@ -16,39 +16,39 @@ namespace TransparenciaDeObras7.Controllers
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
-        [HttpGet]
+        [HttpGet] // Retorna todas as obras da API
         public async Task<ActionResult<IEnumerable<Obra>>> GetObraSet()
         {
             return await _context.Obras.ToListAsync();
         }
-        [HttpGet("Pag")]
+        [HttpGet("Pag")] // Retorna todas as obras com paginação
         public async Task<ActionResult<IEnumerable<Obra>>> GetPagObraSet(int pageNumber, int pageQuantity)
         {
             return await _context.Obras.Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
         }
-        [HttpGet("public")]
+        [HttpGet("public")] // Retorna todas as obras publicas
         public async Task<ActionResult<IEnumerable<Obra>>> GetPublicObraSet(int pageNumber, int pageQuantity)
         {
-            var obrasPublicadas = await _context.Obras.Where(o => o.publicadoDetalhe).Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
+            var obrasPublicadas = await _context.Obras.Where(o => o.PublicadoDetalhe).Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
             return Ok(obrasPublicadas);
         }
-        [HttpPost]
+        [HttpPost] // Cadastra a obra
         public IActionResult Add(Obra obra)
         {
             // Obtenha o último ID da lista de obras no banco de dados
-            long ultimoId = _context.Obras.Max(o => o.id);
+            long ultimoId = _context.Obras.Max(o => o.Id);
 
             // Incremente esse ID em 1 para obter o próximo ID disponível
             long proximoId = ultimoId + 1;
 
             // Defina o ID da nova obra como o próximo ID disponível
-            obra.id = proximoId;
+            obra.Id = proximoId;
 
             var obras = _context.Obras.Add(obra);
             _context.SaveChanges();
             return Ok(obras.Entity);
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] // Atualiza obra
         public IActionResult Update(long id, Obra updatedObra)
         {
             var existingObra = _context.Obras.Find(id);
@@ -59,23 +59,23 @@ namespace TransparenciaDeObras7.Controllers
             }
 
             // Atualiza as propriedades da obra existente com base na obra recebida
-            existingObra.nomeDetalhe = updatedObra.nomeDetalhe;
-            existingObra.numeroDetalhe = updatedObra.numeroDetalhe;
-            existingObra.situacaoDetalhe = updatedObra.situacaoDetalhe;
-            existingObra.publicadoDetalhe = updatedObra.publicadoDetalhe;
-            existingObra.numeroDetalhe = updatedObra.numeroDetalhe;
-            existingObra.orgaoPublicoDetalhe = updatedObra.orgaoPublicoDetalhe;
-            existingObra.tipoObraDetalhe = updatedObra.tipoObraDetalhe;
-            existingObra.prazoInicial = updatedObra.prazoInicial;
-            existingObra.prazoFinal = updatedObra.prazoFinal;
-            existingObra.valorEmpenhado = updatedObra.valorEmpenhado;
-            existingObra.valorLiquidado = updatedObra.valorLiquidado;
-            existingObra.nomeContratadaDetalhe = updatedObra.nomeContratadaDetalhe;
-            existingObra.cnpjContratadaObraDetalhe = updatedObra.cnpjContratadaObraDetalhe;
-            existingObra.anoDetalhe = updatedObra.anoDetalhe;
-            existingObra.licitacao = updatedObra.licitacao;
-            existingObra.contrato = updatedObra.contrato;
-            existingObra.localizacaoobraDetalhe = updatedObra.localizacaoobraDetalhe;
+            existingObra.NomeDetalhe = updatedObra.NomeDetalhe;
+            existingObra.NumeroDetalhe = updatedObra.NumeroDetalhe;
+            existingObra.SituacaoDetalhe = updatedObra.SituacaoDetalhe;
+            existingObra.PublicadoDetalhe = updatedObra.PublicadoDetalhe;
+            existingObra.NumeroDetalhe = updatedObra.NumeroDetalhe;
+            existingObra.OrgaoPublicoDetalhe = updatedObra.OrgaoPublicoDetalhe;
+            existingObra.TipoObraDetalhe = updatedObra.TipoObraDetalhe;
+            existingObra.PrazoInicial = updatedObra.PrazoInicial;
+            existingObra.PrazoFinal = updatedObra.PrazoFinal;
+            existingObra.ValorEmpenhado = updatedObra.ValorEmpenhado;
+            existingObra.ValorLiquidado = updatedObra.ValorLiquidado;
+            existingObra.NomeContratadaDetalhe = updatedObra.NomeContratadaDetalhe;
+            existingObra.CnpjContratadaObraDetalhe = updatedObra.CnpjContratadaObraDetalhe;
+            existingObra.AnoDetalhe = updatedObra.AnoDetalhe;
+            existingObra.Licitacao = updatedObra.Licitacao;
+            existingObra.Contrato = updatedObra.Contrato;
+            existingObra.LocalizacaoobraDetalhe = updatedObra.LocalizacaoobraDetalhe;
 
             try
             {

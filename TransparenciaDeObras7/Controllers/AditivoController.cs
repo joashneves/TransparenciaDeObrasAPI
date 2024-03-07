@@ -29,13 +29,13 @@ namespace TransparenciaDeObras7.Controllers
         public IActionResult Add([FromForm] AditivoViewModel aditivoViewModel)
         {
             // Obtenha o último ID da lista de __ no banco de dados
-            long ultimoId = _context.AditivoSet.Max(o => o.id);
+            long ultimoId = _context.AditivoSet.Max(o => o.Id);
 
             // Incremente esse ID em 1 para obter o próximo ID disponível
             long proximoId = ultimoId + 1;
 
             // Defina o ID da nova __ como o próximo ID disponível
-            aditivoViewModel.id = proximoId;
+            aditivoViewModel.Id = proximoId;
 
             if (aditivoViewModel.Aditivo.ContentType.ToLower() != "application/pdf")
             {
@@ -46,15 +46,15 @@ namespace TransparenciaDeObras7.Controllers
 
             using (Stream fileStream = new FileStream(filePath, FileMode.Create)) { aditivoViewModel.Aditivo.CopyTo(fileStream);  } 
             var aditivo = new Aditivo();
-            aditivo.nome = aditivoViewModel.nome;
-            aditivo.id_obras = aditivoViewModel.id_obras;
-            aditivo.ano = aditivoViewModel.ano;
-            aditivo.assinaturaData = aditivoViewModel.assinaturaData;
-            aditivo.tipo = aditivoViewModel.tipo;
-            aditivo.casoAditivo = aditivoViewModel.casoAditivo;
-            aditivo.prazo = aditivoViewModel.prazo;
-            aditivo.valorContratual = aditivoViewModel.valorContratual;
-            aditivo.caminhoArquivo = filePath;
+            aditivo.Nome = aditivoViewModel.Nome;
+            aditivo.Id_obras = aditivoViewModel.Id_obras;
+            aditivo.Ano = aditivoViewModel.Ano;
+            aditivo.AssinaturaData = aditivoViewModel.AssinaturaData;
+            aditivo.Tipo = aditivoViewModel.Tipo;
+            aditivo.CasoAditivo = aditivoViewModel.CasoAditivo;
+            aditivo.Prazo = aditivoViewModel.Prazo;
+            aditivo.ValorContratual = aditivoViewModel.ValorContratual;
+            aditivo.CaminhoArquivo = filePath;
             var aditivoadd = _context.AditivoSet.Add(aditivo);
             _context.SaveChanges();
 
@@ -66,12 +66,12 @@ namespace TransparenciaDeObras7.Controllers
         private void AtualizarValorNaObra(Aditivo aditivo)
         {
             // Lógica para recuperar a obra correspondente e atualizar o valor
-            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.Id == aditivo.Id_obras);
 
             if (obra != null)
             {
                 // Atualize o valor na obra com base na nova medição
-                obra.valorEmpenhado += aditivo.valorContratual;
+                obra.ValorEmpenhado += aditivo.ValorContratual;
 
                 // Salve as alterações no banco de dados
                 _contextObra.SaveChanges();
@@ -84,16 +84,16 @@ namespace TransparenciaDeObras7.Controllers
         private void AtualizarValorDiasNaObra(Aditivo aditivo)
         {
             // Lógica para recuperar a obra correspondente e atualizar o valor
-            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.Id == aditivo.Id_obras);
 
             if (obra != null)
             {
-                if (obra.prazoInicial == 0) {
+                if (obra.PrazoInicial == 0) {
                     // Atualize o valor na obra com base na nova medição
-                    obra.prazoInicial += aditivo.prazo;
-                }else if (obra.prazoInicial != 0)
+                    obra.PrazoInicial += aditivo.Prazo;
+                }else if (obra.PrazoInicial != 0)
                 {
-                    obra.prazoFinal += aditivo.prazo;
+                    obra.PrazoFinal += aditivo.Prazo;
                 }
                 // Salve as alterações no banco de dados
                 _contextObra.SaveChanges();
@@ -111,7 +111,7 @@ namespace TransparenciaDeObras7.Controllers
                 return NotFound(); // Ou outra resposta adequada se o arquivo não for encontrado
             }
 
-            var filePath = aditivo.caminhoArquivo;
+            var filePath = aditivo.CaminhoArquivo;
 
             // Leia o arquivo em bytes
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -122,7 +122,7 @@ namespace TransparenciaDeObras7.Controllers
             // Construa o FileContentResult para retornar o arquivo ao cliente
             var fileContentResult = new FileContentResult(fileBytes, mimeType)
             {
-                FileDownloadName = aditivo.caminhoArquivo // O nome do arquivo que o usuário verá ao baixar
+                FileDownloadName = aditivo.CaminhoArquivo // O nome do arquivo que o usuário verá ao baixar
             };
 
             return fileContentResult;
@@ -144,25 +144,25 @@ namespace TransparenciaDeObras7.Controllers
             var filePath = Path.Combine("Storage/Anexo", updatedAditivo.Aditivo.FileName);
 
             // Salve o valor e dia original antes da atualização
-            double valorContratudalOriginal = existingAditivo.valorContratual;
-            int valorPrazoOriginal = existingAditivo.prazo;
+            double valorContratudalOriginal = existingAditivo.ValorContratual;
+            int valorPrazoOriginal = existingAditivo.Prazo;
 
             // Atualiza as propriedades da obra existente com base na obra recebida
-            existingAditivo.nome = updatedAditivo.nome;
-            existingAditivo.ano = updatedAditivo.ano;
-            existingAditivo.assinaturaData = updatedAditivo.assinaturaData;
-            existingAditivo.tipo = updatedAditivo.tipo;
-            existingAditivo.casoAditivo = updatedAditivo.casoAditivo;
-            existingAditivo.prazo = updatedAditivo.prazo;
-            existingAditivo.valorContratual = updatedAditivo.valorContratual;
-            existingAditivo.caminhoArquivo = filePath;
+            existingAditivo.Nome = updatedAditivo.Nome;
+            existingAditivo.Ano = updatedAditivo.Ano;
+            existingAditivo.AssinaturaData = updatedAditivo.AssinaturaData;
+            existingAditivo.Tipo = updatedAditivo.Tipo;
+            existingAditivo.CasoAditivo = updatedAditivo.CasoAditivo;
+            existingAditivo.Prazo = updatedAditivo.Prazo;
+            existingAditivo.ValorContratual = updatedAditivo.ValorContratual;
+            existingAditivo.CaminhoArquivo = filePath;
 
             try
             {
                 _context.SaveChanges(); // Salva as alterações no banco de dados
 
-                AtualizarValorNaObra(existingAditivo, updatedAditivo.valorContratual - valorContratudalOriginal);
-                AtualizarPrazoNaObra(existingAditivo, updatedAditivo.prazo - valorPrazoOriginal);
+                AtualizarValorNaObra(existingAditivo, updatedAditivo.ValorContratual - valorContratudalOriginal);
+                AtualizarPrazoNaObra(existingAditivo, updatedAditivo.Prazo - valorPrazoOriginal);
                 return Ok(existingAditivo); // Retorna a obra atualizada
             }
             catch (DbUpdateException)
@@ -173,12 +173,12 @@ namespace TransparenciaDeObras7.Controllers
         }
         private void AtualizarValorNaObra(Aditivo aditivo, double diferencaValorAditivo)
         {
-            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.Id == aditivo.Id_obras);
 
             if (obra != null)
             {
                 // Atualize o valor na obra com base na diferença dos valores de medição
-                obra.valorEmpenhado += diferencaValorAditivo;
+                obra.ValorEmpenhado += diferencaValorAditivo;
 
                 // Salve as alterações no banco de dados
                 _contextObra.SaveChanges();
@@ -187,12 +187,12 @@ namespace TransparenciaDeObras7.Controllers
         }
         private void AtualizarPrazoNaObra(Aditivo aditivo, int diferencaPrazoAditivo)
         {
-            var obra = _contextObra.Obras.FirstOrDefault(o => o.id == aditivo.id_obras);
+            var obra = _contextObra.Obras.FirstOrDefault(o => o.Id == aditivo.Id_obras);
 
             if (obra != null)
             {
                 // Atualize o valor na obra com base na diferença dos valores de medição
-                obra.prazoFinal += diferencaPrazoAditivo;
+                obra.PrazoFinal += diferencaPrazoAditivo;
 
                 // Salve as alterações no banco de dados
                 _contextObra.SaveChanges();

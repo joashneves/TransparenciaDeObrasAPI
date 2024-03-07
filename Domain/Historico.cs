@@ -10,11 +10,11 @@ namespace Domain
     [Table("historico")]
     public class Historico
     {
-        public long id {  get; set; }
-        public long id_obras { get; set; }
-        public string nomeObra { get; set; }
-        public string nome { get; set; }
-        public string nomePerfil { get; set; }
-        public DateTime dataHora { get; set; }
+        public long Id {  get; set; }
+        public long Id_obras { get; set; }
+        public string NomeObra { get; set; }
+        public string Nome { get; set; }
+        public string NomePerfil { get; set; }
+        public DateTime DataHora { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace Infraestrutura.DTO
 {
     public class AnexoDTO
     {
-        public string nome { get; set; }
-        public string descricao { get; set; }
-        public DateTime dataDocumento { get; set; }
+        public string Nome { get; set; }
+        public string Descricao { get; set; }
+        public DateTime DataDocumento { get; set; }
 
     }
 }

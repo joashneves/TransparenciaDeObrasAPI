@@ -26,13 +26,13 @@ namespace TransparenciaDeObras7.Controllers
         public IActionResult Add([FromForm] AnexoViewModel anexosViewModel)
         {
             // Obtenha o último ID da lista de __ no banco de dados
-            long ultimoId = _context.Anexos.Max(o => o.id);
+            long ultimoId = _context.Anexos.Max(o => o.Id);
 
             // Incremente esse ID em 1 para obter o próximo ID disponível
             long proximoId = ultimoId + 1;
 
             // Defina o ID da nova __ como o próximo ID disponível
-            anexosViewModel.id = proximoId;
+            anexosViewModel.Id = proximoId;
 
             if (anexosViewModel.Anexo.ContentType.ToLower() != "application/pdf") { return BadRequest("Apenas arquivos PDF são permitidos."); }
 
@@ -41,11 +41,11 @@ namespace TransparenciaDeObras7.Controllers
 
             using (Stream fileStream = new FileStream(filePath, FileMode.Create)) { anexosViewModel.Anexo.CopyTo(fileStream);  } 
             var anexos = new Anexo();
-            anexos.nome = anexosViewModel.nome;
-            anexos.id_obras = anexosViewModel.id_obras;
-            anexos.descricao = anexosViewModel.descricao;
-            anexos.dataDocumento = anexosViewModel.dataDocumento;
-            anexos.caminhoArquivo = filePath;
+            anexos.Nome = anexosViewModel.Nome;
+            anexos.Id_obras = anexosViewModel.Id_obras;
+            anexos.Descricao = anexosViewModel.Descricao;
+            anexos.DataDocumento = anexosViewModel.DataDocumento;
+            anexos.CaminhoArquivo = filePath;
             var anexosadd = _context.Anexos.Add(anexos);
             _context.SaveChanges();
             return Ok(anexosadd.Entity);
@@ -61,7 +61,7 @@ namespace TransparenciaDeObras7.Controllers
                 return NotFound(); // Ou outra resposta adequada se o arquivo não for encontrado
             }
 
-            var filePath = anexo.caminhoArquivo;
+            var filePath = anexo.CaminhoArquivo;
 
             // Leia o arquivo em bytes
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -72,7 +72,7 @@ namespace TransparenciaDeObras7.Controllers
             // Construa o FileContentResult para retornar o arquivo ao cliente
             var fileContentResult = new FileContentResult(fileBytes, mimeType)
             {
-                FileDownloadName = anexo.caminhoArquivo // O nome do arquivo que o usuário verá ao baixar
+                FileDownloadName = anexo.CaminhoArquivo // O nome do arquivo que o usuário verá ao baixar
             };
 
             return fileContentResult;
@@ -93,10 +93,10 @@ namespace TransparenciaDeObras7.Controllers
             var filePath = Path.Combine("Storage/Anexo", updatedAnexo.Anexo.FileName);
 
             // Atualiza as propriedades da obra existente com base na obra recebida
-            existingAnexo.nome = updatedAnexo.nome;
-            existingAnexo.descricao = updatedAnexo.descricao;
-            existingAnexo.dataDocumento = updatedAnexo.dataDocumento;
-            existingAnexo.caminhoArquivo = filePath;
+            existingAnexo.Nome = updatedAnexo.Nome;
+            existingAnexo.Descricao = updatedAnexo.Descricao;
+            existingAnexo.DataDocumento = updatedAnexo.DataDocumento;
+            existingAnexo.CaminhoArquivo = filePath;
 
             try
             {

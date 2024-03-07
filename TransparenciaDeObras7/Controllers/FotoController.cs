@@ -25,21 +25,21 @@ namespace TransparenciaDeObras7.Controllers
         public IActionResult Add([FromForm]FotoViewModel fotoViewModel)
         {
             // Obtenha o último ID da lista de foto no banco de dados
-            long ultimoId = _context.Foto.Max(o => o.id);
+            long ultimoId = _context.Foto.Max(o => o.Id);
 
             // Incremente esse ID em 1 para obter o próximo ID disponível
             long proximoId = ultimoId + 1;
 
             // Defina o ID da nova foto como o próximo ID disponível
-            fotoViewModel.id = proximoId;
+            fotoViewModel.Id = proximoId;
 
             var filePath = Path.Combine("Storage/Foto", fotoViewModel.Photo.FileName);
             using Stream fileStream = new FileStream(filePath, FileMode.Create);
             fotoViewModel.Photo.CopyTo(fileStream);
             var fotos = new Foto();
-            fotos.nome = fotoViewModel.nome;
-            fotos.id_obras = fotoViewModel.id_obras;
-            fotos.caminhoArquivo = filePath;
+            fotos.Nome = fotoViewModel.Nome;
+            fotos.Id_obras = fotoViewModel.Id_obras;
+            fotos.CaminhoArquivo = filePath;
             var fotoadd = _context.Foto.Add(fotos);
             _context.SaveChanges();
             return Ok(fotoadd.Entity);
@@ -55,7 +55,7 @@ namespace TransparenciaDeObras7.Controllers
                 return NotFound(); // Ou outra resposta adequada se o arquivo não for encontrado
             }
 
-            var filePath = foto.caminhoArquivo;
+            var filePath = foto.CaminhoArquivo;
 
             // Leia o arquivo em bytes
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -66,7 +66,7 @@ namespace TransparenciaDeObras7.Controllers
             // Construa o FileContentResult para retornar o arquivo ao cliente
             var fileContentResult = new FileContentResult(fileBytes, mimeType)
             {
-                FileDownloadName = foto.caminhoArquivo // O nome do arquivo que o usuário verá ao baixar
+                FileDownloadName = foto.CaminhoArquivo // O nome do arquivo que o usuário verá ao baixar
             };
 
             return fileContentResult;
@@ -95,7 +95,7 @@ namespace TransparenciaDeObras7.Controllers
 
             try
             {
-                System.IO.File.Delete(foto.caminhoArquivo); // Exclua o arquivo físico do sistema de arquivos
+                System.IO.File.Delete(foto.CaminhoArquivo); // Exclua o arquivo físico do sistema de arquivos
                 _context.Foto.Remove(foto); // Remova a foto do contexto do Entity Framework
                 _context.SaveChanges(); // Salve as alterações no banco de dados
                 return NoContent(); // Retorna 204 No Content para indicar sucesso

@@ -10,22 +10,22 @@ namespace Domain
     {
         [Key]
         public long Id { get; set; }
-        public string nome { get; set; }
-        public string nomeCompleto { get; set; }
-        public string email { get; set; }
-        public string senha_hash { get; set; }
-        public bool isAdm { get; set; }
-        public bool isCadastrarProjeto { get; set; }
-        public bool isCadastrarAnexo { get; set; }
-        public bool isCadastrarAditivo { get; set; }
-         public bool isCadastrarFiscalGestor { get; set; }
-        public bool isCadastrarMedicao { get; set; }
-        public bool isCadastrarFoto { get; set; }
-        public bool isCadastrarOpcao { get; set; }
+        public string Nome { get; set; }
+        public string NomeCompleto { get; set; }
+        public string Email { get; set; }
+        public string Senha_hash { get; set; }
+        public bool IsAdm { get; set; }
+        public bool IsCadastrarProjeto { get; set; }
+        public bool IsCadastrarAnexo { get; set; }
+        public bool IsCadastrarAditivo { get; set; }
+         public bool IsCadastrarFiscalGestor { get; set; }
+        public bool IsCadastrarMedicao { get; set; }
+        public bool IsCadastrarFoto { get; set; }
+        public bool IsCadastrarOpcao { get; set; }
 
         public void SetPassword(string password)
         {
-            senha_hash = CalculateSHA256(password);
+            Senha_hash = CalculateSHA256(password);
         }
 
         private static string CalculateSHA256(string password)

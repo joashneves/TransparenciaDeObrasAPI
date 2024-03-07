@@ -25,13 +25,13 @@ namespace TransparenciaDeObras7.Controllers
         public IActionResult Add(FiscalGestor fiscalGestor)
         {
             // Obtenha o último ID da lista de __ no banco de dados
-            long ultimoId = _context.FiscalGestors.Max(o => o.id);
+            long ultimoId = _context.FiscalGestors.Max(o => o.Id);
 
             // Incremente esse ID em 1 para obter o próximo ID disponível
             long proximoId = ultimoId + 1;
 
             // Defina o ID da nova __ como o próximo ID disponível
-            fiscalGestor.id = proximoId;
+            fiscalGestor.Id = proximoId;
             var fiscalGestors = _context.FiscalGestors.Add(fiscalGestor);
             _context.SaveChanges();
             return Ok(fiscalGestors.Entity);
@@ -47,10 +47,10 @@ namespace TransparenciaDeObras7.Controllers
             }
 
             // Atualiza as propriedades da obra existente com base na obra recebida
-            existingFiscalGestor.nome = updatedFiscalGestor.nome;
-            existingFiscalGestor.papel = updatedFiscalGestor.papel;
-            existingFiscalGestor.secretaria = updatedFiscalGestor.secretaria;
-            existingFiscalGestor.email = updatedFiscalGestor.email;
+            existingFiscalGestor.Nome = updatedFiscalGestor.Nome;
+            existingFiscalGestor.Papel = updatedFiscalGestor.Papel;
+            existingFiscalGestor.Secretaria = updatedFiscalGestor.Secretaria;
+            existingFiscalGestor.Email = updatedFiscalGestor.Email;
 
             try
             {

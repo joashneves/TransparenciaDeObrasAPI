@@ -7,26 +7,27 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
+    // Estrutura da Obra
     [Table("obras")]
     public class Obra
     {
-        public long id { get; set; }
-        public string nomeDetalhe { get; set; }
-        public int numeroDetalhe { get; set; }
-        public string situacaoDetalhe { get; set; }
-        public bool publicadoDetalhe { get; set; }
-        public DateTime publicacaoData { get; set; }
-        public string orgaoPublicoDetalhe { get; set; }
-        public string tipoObraDetalhe { get; set; }
-        public string nomeContratadaDetalhe { get; set; }
-        public int prazoInicial { get; set; }
-        public int prazoFinal { get; set; }
-        public double valorEmpenhado { get; set; }
-        public double valorLiquidado { get; set; }
-        public string cnpjContratadaObraDetalhe { get; set; }
-        public int anoDetalhe { get; set; }
-        public string licitacao {  get; set; }
-        public string contrato { get; set; }
-        public string localizacaoobraDetalhe { get; set; }
+        public long Id { get; set; }
+        public string NomeDetalhe { get; set; }
+        public int NumeroDetalhe { get; set; }
+        public string SituacaoDetalhe { get; set; }
+        public bool PublicadoDetalhe { get; set; }
+        public DateTime PublicacaoData { get; set; }
+        public string OrgaoPublicoDetalhe { get; set; }
+        public string TipoObraDetalhe { get; set; }
+        public string NomeContratadaDetalhe { get; set; }
+        public int PrazoInicial { get; set; }
+        public int PrazoFinal { get; set; }
+        public double ValorEmpenhado { get; set; }
+        public double ValorLiquidado { get; set; }
+        public string CnpjContratadaObraDetalhe { get; set; }
+        public int AnoDetalhe { get; set; }
+        public string Licitacao {  get; set; }
+        public string Contrato { get; set; }
+        public string LocalizacaoobraDetalhe { get; set; }
     }
 }
