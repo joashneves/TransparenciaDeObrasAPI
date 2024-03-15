@@ -35,11 +35,20 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost] // Cadastra a obra
         public IActionResult Add(Obra obra)
         {
-            // Obtenha o último ID da lista de obras no banco de dados
-            long ultimoId = _context.Obras.Max(o => o.Id);
+            long proximoId;
+            try
+            {
+                // Obtenha o último ID da lista de obras no banco de dados
+                long ultimoId = _context.Obras.Any() ? _context.Obras.Max(o => o.Id) : 0;
 
-            // Incremente esse ID em 1 para obter o próximo ID disponível
-            long proximoId = ultimoId + 1;
+                // Incremente esse ID em 1 para obter o próximo ID disponível
+                proximoId = ultimoId + 1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao obter o último ID: " + ex.Message);
+                return StatusCode(500, "Erro interno do servidor ao cadastrar a obra.");
+            }
 
             // Defina o ID da nova obra como o próximo ID disponível
             obra.Id = proximoId;
@@ -47,6 +56,36 @@ namespace TransparenciaDeObras7.Controllers
             var obras = _context.Obras.Add(obra);
             _context.SaveChanges();
             return Ok(obras.Entity);
+        }
+        [HttpPost("lista")] // Cadastra uma lista da obra
+        public IActionResult Add(List<Obra> obras)
+        {
+            long proximoId;
+            try
+            {
+                // Obtenha o último ID da lista de obras no banco de dados
+                long ultimoId = _context.Obras.Any() ? _context.Obras.Max(o => o.Id) : 0;
+
+                // Incremente esse ID em 1 para obter o próximo ID disponível
+                proximoId = ultimoId + 1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao obter o último ID: " + ex.Message);
+                return StatusCode(500, "Erro interno do servidor ao cadastrar a obra.");
+            }
+
+            // Defina os IDs das novas obras sequencialmente
+            foreach (var obra in obras)
+            {
+                obra.Id = proximoId++;
+            }
+
+            // Adicione as obras ao contexto
+            _context.Obras.AddRange(obras);
+            _context.SaveChanges();
+
+            return Ok(obras);
         }
         [HttpPut("{id}")] // Atualiza obra
         public IActionResult Update(long id, Obra updatedObra)

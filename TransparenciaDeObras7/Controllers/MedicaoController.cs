@@ -27,11 +27,20 @@ namespace TransparenciaDeObras7.Controllers
         [HttpPost] // Cria Medicao
         public IActionResult Add([FromForm] MedicaoViewModel medicaoViewModel)
         {
-            // Obtenha o último ID da lista de Medição no banco de dados
-            long ultimoId = _context.Medicao.Max(o => o.Id);
+            long proximoId;
+            try
+            {
+                // Obtenha o último ID da lista no banco de dados
+                long ultimoId = _context.Medicao.Any() ? _context.Medicao.Max(o => o.Id) : 0;
 
-            // Incremente esse ID em 1 para obter o próximo ID disponível
-            long proximoId = ultimoId + 1;
+                // Incremente esse ID em 1 para obter o próximo ID disponível
+                proximoId = ultimoId + 1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao obter o último ID: " + ex.Message);
+                return StatusCode(500, "Erro interno do servidor ao cadastrar o item.");
+            }
 
             // Defina o ID da nova Medição como o próximo ID disponível
             medicaoViewModel.Id = proximoId;

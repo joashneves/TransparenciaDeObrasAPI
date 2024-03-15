@@ -31,11 +31,20 @@ namespace TransparenciaDeObras7.Controllers
         [AllowAnonymous]
         public IActionResult Add(User user)
         {
-            // Obtenha o último ID da lista de users no banco de dados
-            long ultimoId = _context.Users.Max(o => o.Id);
+            long proximoId;
+            try
+            {
+                // Obtenha o último ID da lista no banco de dados
+                long ultimoId = _context.Users.Any() ? _context.Users.Max(o => o.Id) : 0;
 
-            // Incremente esse ID em 1 para obter o próximo ID disponível
-            long proximoId = ultimoId + 1;
+                // Incremente esse ID em 1 para obter o próximo ID disponível
+                proximoId = ultimoId + 1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao obter o último ID: " + ex.Message);
+                return StatusCode(500, "Erro interno do servidor ao cadastrar o item.");
+            }
 
             // Defina o ID da nova user como o próximo ID disponível
             user.Id = proximoId;
