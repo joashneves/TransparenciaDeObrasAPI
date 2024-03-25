@@ -32,6 +32,12 @@ namespace TransparenciaDeObras7.Controllers
             var obrasPublicadas = await _context.Obras.Where(o => o.PublicadoDetalhe).Skip(pageNumber * pageQuantity).Take(pageQuantity).ToListAsync();
             return Ok(obrasPublicadas);
         }
+        [HttpGet("downloadpublic")] // Retorna todas as obras publicas
+        public async Task<ActionResult<IEnumerable<Obra>>> GetDownloadPublicObraSet()
+        {
+            var obrasPublicadas = await _context.Obras.Where(o => o.PublicadoDetalhe).ToListAsync();
+            return Ok(obrasPublicadas);
+        }
         [HttpPost] // Cadastra a obra
         public IActionResult Add(Obra obra)
         {
