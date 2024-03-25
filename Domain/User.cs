@@ -40,7 +40,7 @@ namespace Domain
                 {
                     sb.Append(hashBytes[i].ToString("x2")); // Converte para representação hexadecimal
                 }
-
+                
                 return sb.ToString();
             }
         }

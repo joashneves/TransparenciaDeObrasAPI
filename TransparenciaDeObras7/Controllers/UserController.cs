@@ -21,14 +21,12 @@ namespace TransparenciaDeObras7.Controllers
             _context = context ?? throw new ArgumentException(nameof(context));
         }
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<User>>> GetUserSet()
         {
             return await _context.Users.ToListAsync();
         }
         [HttpPost]
         [DisableRateLimiting]
-        [AllowAnonymous]
         public IActionResult Add(User user)
         {
             long proximoId;
@@ -94,7 +92,6 @@ namespace TransparenciaDeObras7.Controllers
 
         [HttpPut("{id}")]
         [DisableRateLimiting]
-        [Authorize]
         public IActionResult Update(long id, User updatedUser)
         {
             var existingUser = _context.Users.Find(id);
@@ -158,7 +155,6 @@ namespace TransparenciaDeObras7.Controllers
             }
         }
         [HttpPut("login")]
-        [AllowAnonymous]
         public IActionResult Login(User userModel)
         {
 

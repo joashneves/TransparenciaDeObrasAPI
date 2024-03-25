@@ -68,7 +68,7 @@ namespace TransparenciaDeObras7
                     {
                         policy.WithOrigins("http://localhost:5173",
                             "https://localhost:7067",
-                            "http://172.31.254.7:5173"
+                            "http://172.31.254.6:5173"
                             ).AllowAnyHeader().AllowAnyMethod();
                     });
             });
